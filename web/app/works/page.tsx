@@ -15,23 +15,26 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function WorksPage() {
-  const [works, categories, settings] = await Promise.all([
+  const [works, categories] = await Promise.all([
     getAllWorks(),
     getCategories(),
-    getSiteSettings(),
   ]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-      <div className="mb-10 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Works</h1>
-        <p className="text-muted-foreground mx-auto mt-3 max-w-xl text-sm leading-relaxed">
-          {settings.defaultSeo?.description ??
-            "Explore the catalog. Filter by category — more loads as you scroll."}
-        </p>
+    <div className="flex flex-col">
+      <div className="mx-auto max-w-6xl px-4 pt-12 pb-6 text-center sm:px-6 sm:pt-16 sm:pb-8">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Works
+        </h1>
       </div>
 
-      <Suspense fallback={<p className="text-muted-foreground text-center text-sm">Loading…</p>}>
+      <Suspense
+        fallback={
+          <div className="bg-[#f4f6f7] py-16 text-center">
+            <p className="text-muted-foreground text-sm">Loading…</p>
+          </div>
+        }
+      >
         <WorksCatalog works={works} categories={categories} />
       </Suspense>
     </div>

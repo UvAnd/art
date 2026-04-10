@@ -19,11 +19,11 @@ export function WorkDetailLayout({ work }: { work: WorkDetail }) {
 
   return (
     <div className="grid w-full lg:grid-cols-12 lg:gap-0 min-h-[calc(100dvh_-_200px)]">
-      <div className="bg-muted  lg:col-span-7">
+      <div className="bg-muted  lg:col-span-6">
         <WorkImageSection work={work} />
       </div>
 
-      <div className="bg-background flex flex-col gap-[15px] px-6 py-14 sm:px-10 lg:col-span-5 lg:py-20 lg:pl-10 lg:pr-12 xl:pr-16">
+      <div className="bg-background flex flex-col gap-[15px] px-6 py-14 sm:px-10 lg:col-span-6 lg:py-20 lg:pl-10 lg:pr-12 xl:pr-16">
         <h1 className="text-[32px] font-normal leading-[1.2] text-foreground">
           {work.title}
         </h1>

@@ -1,3 +1,7 @@
+"use client";
+
+import { useCallback, useState } from "react";
+
 import { cn } from "@/lib/utils";
 import { imageUrl } from "@/lib/sanity.image";
 import { isSanityConfigured } from "@/lib/env";
@@ -16,6 +20,8 @@ type SanityImageProps = {
   sizes?: string;
   /** Use Sanity metadata aspect ratio (or a custom one) for layouts like masonry. */
   aspectRatio?: number;
+  /** Extra classes for the blurred LQIP placeholder layer (only when `lqip` is set). */
+  lqipClassName?: string;
 };
 
 export function SanityImage({
@@ -29,7 +35,14 @@ export function SanityImage({
   priority,
   sizes,
   aspectRatio,
+  lqipClassName,
 }: SanityImageProps) {
+  const [mainReady, setMainReady] = useState(false);
+
+  const onMainHandled = useCallback(() => {
+    setMainReady(true);
+  }, []);
+
   const src =
     isSanityConfigured() && image ? imageUrl(image, width, quality) : undefined;
   const dims = image?.asset?.metadata?.dimensions;
@@ -57,7 +70,11 @@ export function SanityImage({
           src={lqip}
           alt=""
           aria-hidden
-          className="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-xl"
+          className={cn(
+            "absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-xl transition-opacity duration-300 ease-out motion-reduce:transition-none",
+            mainReady && "pointer-events-none opacity-0",
+            lqipClassName,
+          )}
         />
       ) : null}
       <img
@@ -65,11 +82,16 @@ export function SanityImage({
         alt={alt}
         width={width}
         height={height}
-        className={cn("relative z-[1] h-full w-full object-cover", imgClassName)}
+        className={cn(
+          "relative z-[1] h-full w-full object-cover",
+          imgClassName,
+        )}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
         fetchPriority={priority ? "high" : undefined}
         sizes={sizes}
+        onLoad={onMainHandled}
+        onError={onMainHandled}
       />
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import type { CSSProperties } from "react";
 import { useReducedMotion } from "framer-motion";
 
 import { useMarquee } from "@/hooks/use-marquee";
@@ -57,19 +58,27 @@ export function HeroSlider({ slides }: { slides: WorkListItem[] }) {
 
   if (!items.length) return <EmptyState />;
 
+  const sectionStyle = {
+    "--hero-height": "calc(100dvh - 100px)",
+    "--hero-track-height": "calc(100dvh - 260px)",
+  } as CSSProperties;
+
   return (
-    <section className="relative w-full">
-      <div className="w-full pt-14">
+    <section
+      className="relative w-full min-h-[calc(100dvh-100px)]"
+      style={sectionStyle}
+    >
+      <div className="flex min-h-[var(--hero-height)] w-full flex-col pt-8">
         {/* Overflow clip container + hover target — full viewport width */}
         <div
           ref={containerRef}
-          className="relative w-full overflow-hidden"
+          className="relative w-full flex-1 overflow-hidden grid"
           style={{ contain: "layout style" }}
         >
           {/* Translating track — compositor-only layer */}
           <div
             ref={trackRef}
-            className="flex flex-row"
+            className="flex h-full flex-row items-end"
             style={{
               willChange: "transform",
               backfaceVisibility: "hidden",
@@ -78,19 +87,19 @@ export function HeroSlider({ slides }: { slides: WorkListItem[] }) {
             {/* First set: measured to know one full loop width */}
             <div
               ref={measureRef}
-              className="flex flex-row items-center gap-6 pr-6"
+              className="flex h-full flex-row items-end gap-6 pr-6"
             >
               <SlideSet items={items} priority />
             </div>
 
             {/* Clone for seamless wrap */}
-            <div className="flex flex-row items-center gap-6 pr-6">
+            <div className="flex h-full flex-row items-end gap-6 pr-6">
               <SlideSet items={items} priority={false} />
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-center pb-10 pt-6">
+        <div className="flex shrink-0 items-center justify-center pb-8 pt-4">
           <a
             href="#gallery"
             className="flex items-center gap-2 text-[18px] font-normal text-[var(--primary,#3483b1)]"

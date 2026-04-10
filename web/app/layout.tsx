@@ -4,8 +4,6 @@ import { Baloo_2, Geist_Mono } from "next/font/google";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
-import { PageTransition } from "@/components/ui/page-transition";
-
 import { getSiteSettings } from "@/lib/cms";
 
 import "./globals.css";
@@ -48,7 +46,7 @@ export default async function RootLayout({
     >
       <body className="bg-background text-foreground min-h-full flex flex-col">
         <Header settings={settings} />
-        <PageTransition>{children}</PageTransition>
+        {children}
         <Footer settings={settings} />
         <AnalyticsProvider />
       </body>

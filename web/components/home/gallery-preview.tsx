@@ -87,7 +87,8 @@ export function GalleryPreview({
                   key={work._id}
                   layout
                   initial={{ opacity: 0, y: 12, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.18, margin: "0px 0px -8% 0px" }}
                   exit={{ opacity: 0, y: -10, scale: 0.98 }}
                   transition={{ duration: 0.24, ease: "easeOut" }}
                   className="mb-6 break-inside-avoid"

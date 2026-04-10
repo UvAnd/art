@@ -61,7 +61,6 @@ export const contactPageQuery = `
     illustration,
     sideText,
     contactEmailDisplay,
-    web3formsAccessKey
   }
 `;
 

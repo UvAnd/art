@@ -6,7 +6,7 @@ export function Footer({ settings }: { settings: SiteSettings }) {
     settings.footerText?.trim() || `© Copyright ${year}. All rights reserved.`;
 
   return (
-    <footer className="border-border/60 mt-auto border-t py-10">
+    <footer className=" mt-auto py-10">
       <div className="text-muted-foreground mx-auto max-w-6xl px-4 text-center text-sm sm:px-6">
         {text}
       </div>

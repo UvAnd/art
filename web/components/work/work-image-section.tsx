@@ -11,10 +11,11 @@ export function WorkImageSection({ work }: { work: WorkDetail }) {
         image={work.mainImage}
         alt={work.title}
         width={1200}
-        lqip={work.mainLqip ?? work.lqip}
+        lqip={work.lqip}
         priority
-        className="w-full max-w-full "
-        imgClassName="mx-auto object-contain max-h-[70vh] "
+        className="w-full max-w-full bg-muted"
+        lqipClassName="object-contain scale-100"
+        imgClassName="mx-auto object-contain max-h-[50vh] lg:max-h-[70vh]"
       />
 
       {/* {gallery.length ? (

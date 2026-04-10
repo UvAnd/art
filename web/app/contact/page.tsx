@@ -21,7 +21,7 @@ export default async function ContactPage() {
     ({
       headline: "Say Hello",
       sideText:
-        "Don't want to fill out the form? Email us directly — we'll respond quickly.",
+        "Don't want to fill out the form?\nWrite to us directly — we'll respond quickly.",
     } as const);
 
   return <ContactForm page={contact} settings={settings} />;

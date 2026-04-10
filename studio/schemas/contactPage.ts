@@ -28,11 +28,5 @@ export default defineType({
       title: "Contact email (display)",
       type: "string",
     }),
-    defineField({
-      name: "web3formsAccessKey",
-      title: "Web3Forms access key",
-      type: "string",
-      description: "From web3forms.com — public key used by the contact form.",
-    }),
   ],
 });

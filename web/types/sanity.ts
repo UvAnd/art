@@ -69,5 +69,4 @@ export interface ContactPage {
   illustration?: SanityImageSource | null;
   sideText?: string | null;
   contactEmailDisplay?: string | null;
-  web3formsAccessKey?: string | null;
 }
