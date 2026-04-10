@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { PortableTextBlock } from "@/components/ui/portable-text-block";
 import { SanityImage } from "@/components/ui/sanity-image";
 
@@ -21,18 +19,6 @@ export function PortraitSection({ page }: { page: AboutPage }) {
         <div className="lg:mt-20 pr-6 lg:pr-10">
           <PortableTextBlock value={page.bio} variant="reach" />
         </div>
-        {page.cvLink ? (
-          <p className="mt-8">
-            <Link
-              href={page.cvLink}
-              className="text-primary text-sm font-medium underline underline-offset-4"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Download CV
-            </Link>
-          </p>
-        ) : null}
       </div>
     </div>
   );

@@ -30,7 +30,6 @@ export interface WorkListItem {
   slug: { current: string };
   status: WorkStatus;
   featured?: boolean | null;
-  summary?: string | null;
   mainImage?: SanityImageSource | null;
   lqip?: string | null;
   categories?: Category[] | null;
@@ -42,9 +41,6 @@ export interface WorkDetail extends WorkListItem {
   externalUrl?: string | null;
   publishedAt?: string | null;
   mainLqip?: string | null;
-  gallery?: Array<
-    SanityImageSource & { lqip?: string | null; asset?: SanityImageSource["asset"] }
-  > | null;
   parameters?: Array<{ key?: string; value?: string }> | null;
 }
 
@@ -61,12 +57,10 @@ export interface SiteSettings {
 export interface AboutPage {
   portrait?: SanityImageSource | null;
   bio?: unknown[] | null;
-  cvLink?: string | null;
 }
 
 export interface ContactPage {
   headline?: string | null;
   illustration?: SanityImageSource | null;
   sideText?: string | null;
-  contactEmailDisplay?: string | null;
 }

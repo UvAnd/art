@@ -23,10 +23,5 @@ export default defineType({
       type: "text",
       rows: 4,
     }),
-    defineField({
-      name: "contactEmailDisplay",
-      title: "Contact email (display)",
-      type: "string",
-    }),
   ],
 });

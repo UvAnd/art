@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { SanityImage } from "@/components/ui/sanity-image";
 import { buttonVariants } from "@/components/ui/button-variants";
 
-import { normalizeDisplayMailto } from "@/lib/social";
 import { cn } from "@/lib/utils";
 
 import type { ContactPage, SiteSettings } from "@/types/sanity";
@@ -192,17 +191,6 @@ export function ContactForm({
               <p className="text-foreground text-center text-[28px] font-normal leading-[1.2] whitespace-pre-wrap">
                 {sideText}
               </p>
-              {page.contactEmailDisplay ? (
-                <p className="text-muted-foreground -mt-4 text-center text-sm">
-                  <a
-                    href={normalizeDisplayMailto(page.contactEmailDisplay)}
-                    className="text-primary font-medium underline underline-offset-4"
-                  >
-                    {page.contactEmailDisplay.replace(/^mailto:/i, "").trim() ||
-                      page.contactEmailDisplay}
-                  </a>
-                </p>
-              ) : null}
               <SocialLinks socials={settings.socials} className="gap-2" />
             </div>
           </div>

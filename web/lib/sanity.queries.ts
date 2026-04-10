@@ -21,7 +21,6 @@ export const allWorksQuery = `
     slug,
     status,
     featured,
-    summary,
     mainImage,
     "lqip": mainImage.asset->metadata.lqip,
     categories[]->{ _id, title, slug }
@@ -33,17 +32,12 @@ export const workBySlugQuery = `
     title,
     slug,
     status,
-    summary,
     description,
     price,
     externalUrl,
     publishedAt,
     mainImage,
     "mainLqip": mainImage.asset->metadata.lqip,
-    gallery[]{
-      ...,
-      "lqip": asset->metadata.lqip
-    },
     parameters,
     categories[]->{ title, slug }
   }
@@ -53,14 +47,13 @@ export const allWorkSlugsQuery = `
   *[_type == "work" && defined(slug.current)]{ "slug": slug.current }
 `;
 
-export const aboutPageQuery = `*[_type == "aboutPage"][0]{ portrait, bio, cvLink }`;
+export const aboutPageQuery = `*[_type == "aboutPage"][0]{ portrait, bio }`;
 
 export const contactPageQuery = `
   *[_type == "contactPage"][0]{
     headline,
     illustration,
     sideText,
-    contactEmailDisplay,
   }
 `;
 

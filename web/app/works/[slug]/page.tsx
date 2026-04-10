@@ -33,7 +33,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
   const site = settings.siteTitle ?? "Artist portfolio";
   const title = `${work.title} · ${site}`;
-  const description = work.summary ?? settings.defaultSeo?.description ?? undefined;
+  const description = settings.defaultSeo?.description ?? work.title ?? undefined;
   const og = imageUrl(work.mainImage, 1200, 85);
   return {
     title: work.title,

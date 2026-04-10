@@ -128,7 +128,7 @@ function WorksCatalogBody({ works, categories, categorySlug }: InnerProps) {
                       />
                       <div className="pt-2">
                         <p className="text-left text-[14px] font-normal leading-[1.2] text-muted-foreground">
-                          {work.summary ?? work.title}
+                          {work.title}
                         </p>
                       </div>
                     </div>

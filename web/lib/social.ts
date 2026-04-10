@@ -35,10 +35,3 @@ const LABELS: Record<string, string> = {
 export function socialPlatformLabel(platform: SocialPlatform | string): string {
   return LABELS[platform] ?? "Social link";
 }
-
-/** Contact page display line: single mailto, works with or without mailto: prefix in CMS */
-export function normalizeDisplayMailto(raw: string): string {
-  const addr = stripMailtoPrefix(raw);
-  if (!addr) return "#";
-  return `mailto:${addr}`;
-}

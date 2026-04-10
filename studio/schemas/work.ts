@@ -33,13 +33,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "summary",
-      title: "Summary",
-      type: "text",
-      rows: 3,
-      validation: (Rule) => Rule.max(200),
-    }),
-    defineField({
       name: "description",
       title: "Description",
       type: "array",
@@ -58,12 +51,6 @@ export default defineType({
       type: "image",
       options: { hotspot: true },
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "gallery",
-      title: "Gallery",
-      type: "array",
-      of: [{ type: "image", options: { hotspot: true } }],
     }),
     defineField({
       name: "parameters",

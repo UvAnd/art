@@ -34,11 +34,6 @@ export function WorkCard({ work }: { work: WorkListItem }) {
               {cat}
             </p>
           ) : null}
-          {work.summary ? (
-            <p className="text-muted-foreground mt-2 line-clamp-2 text-sm">
-              {work.summary}
-            </p>
-          ) : null}
         </div>
       </div>
     </Link>

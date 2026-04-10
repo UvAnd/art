@@ -39,7 +39,7 @@ export const SliderCard = memo(function SliderCard({
   if (!slug) return null;
 
   const ar = getAspectRatio(slide.mainImage);
-  const caption = slide.summary ?? slide.title;
+  const caption = slide.title;
   const sz = sizeForIndex(index);
   const widthRatio = (sz.w / 496).toFixed(4);
   const heightRatio = (sz.maxH / 496).toFixed(4);

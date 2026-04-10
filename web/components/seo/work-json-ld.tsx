@@ -26,7 +26,6 @@ export function WorkJsonLd({
     "@context": "https://schema.org",
     "@type": "VisualArtwork",
     name: work.title,
-    description: work.summary ?? undefined,
     image: img ? [img] : undefined,
     url: `${siteUrl}${canonicalPath}`,
   };

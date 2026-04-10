@@ -52,8 +52,8 @@ npm run dev
 To make the website render correctly with minimal content, create:
 
 1. `siteSettings` document (site title, logo, hero slides, socials, SEO defaults, footer text, optional external shop URL)
-2. `aboutPage` document (portrait, bio, optional CV link)
-3. `contactPage` document (headline, illustration, side text, contact email display) — **no** Web3Forms key in Sanity; the form uses `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in `web/.env.local`
+2. `aboutPage` document (portrait, bio)
+3. `contactPage` document (headline, illustration, side text) — **no** Web3Forms key in Sanity; the form uses `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in `web/.env.local`
 4. `category` documents
 5. `work` documents (at least 2 works with `slug`, `status`, `mainImage`, `categories`)
 
