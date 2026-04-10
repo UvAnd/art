@@ -77,7 +77,11 @@ function GalleryPreviewMasonry({ items }: { items: WorkListItem[] }) {
               key={work._id}
               initial={{ opacity: 0, y: 18, scale: 0.97 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.12, margin: "0px 0px -10% 0px" }}
+              viewport={{
+                once: true,
+                amount: 0.12,
+                margin: "0px 0px -10% 0px",
+              }}
               transition={{
                 duration: enterDuration,
                 delay: staggerInBatch,
@@ -101,7 +105,7 @@ function GalleryPreviewMasonry({ items }: { items: WorkListItem[] }) {
                   />
                   <div className="pt-2">
                     <p className="text-left text-[14px] font-normal leading-[1.2] text-muted-foreground">
-                      {work.summary ?? work.title}
+                      {work.title}
                     </p>
                   </div>
                 </div>

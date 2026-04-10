@@ -151,6 +151,28 @@ Because `web/` uses `output: "export"`:
 
 If you add a new Sanity-dependent route, confirm it is compatible with static export.
 
+## SEO: robots, sitemap, and “автооновлення”
+
+### Already in the app
+
+- **`web/app/robots.ts`** — `allow: /` for everyone, посилання на sitemap: `{NEXT_PUBLIC_SITE_URL}/sitemap.xml`.
+- **`web/app/sitemap.ts`** — статичні маршрути (`/`, `/works`, `/about`, `/contact`) + усі work URLs з Sanity (`getAllWorkSlugs()`).
+
+На **продакшені** обов’язково задай **`NEXT_PUBLIC_SITE_URL=https://annakopach.com`** (без слеша в кінці) у Cloudflare — інакше в `robots`/`sitemap` потрапить `localhost`.
+
+### Чи оновлюється sitemap “сам”?
+
+Так, але **тільки після нової збірки**. Сайт — static export: GROQ виконується під час `npm run build`. Нові сторінки в sitemap з’являться після **деплою** (наприклад, webhook Sanity → Pages після публікації в CMS). Окремого “runtime cron” для sitemap не потрібно — це нормальна модель для статики.
+
+### Приховати `*.pages.dev` від SEO (додатково до кастомного домену)
+
+1. **`web/public/_headers`** — додано офіційні шаблони Cloudflare:
+   - `https://:project.pages.dev/*` → `X-Robots-Tag: noindex`
+   - `https://:version.:project.pages.dev/*` → `X-Robots-Tag: noindex`  
+   Кастомний домен **не** матчиться цими правилами.
+
+2. **Bulk Redirects** (у Cloudflare Dashboard) — окремо налаштуй редірект з **`art-7hs.pages.dev`** (або всього `*.pages.dev`, якщо підходить політика) на **`https://annakopach.com`**. Див. [Bulk Redirects](https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/) та документацію Pages щодо редіректів з `pages.dev` на custom domain.
+
 ## Social Links Notes
 
 Site social links are controlled by `siteSettings.socials`.
@@ -170,13 +192,33 @@ Implementation rules for UI and the Figma MCP workflow are documented in [`RULES
 
 ## Deployment Notes (Cloudflare Pages)
 
-Deployment should run:
+This site uses Next.js **`output: "export"`** — the production artifact is **static files in `out/`**, not a Node server or OpenNext bundle.
 
-- **Build:** `cd web && npm run build`
-- **Output:** `web/out`
+### Correct setup (Cloudflare Pages)
 
-Set the same env vars you use locally (Sanity project/dataset, `NEXT_PUBLIC_SITE_URL`, Web3Forms key, optional analytics) in the Cloudflare Pages project settings.
+Use **Workers & Pages → Create → Pages → Connect to Git** (not the Workers + `wrangler deploy` wizard).
 
-After publishing content in Sanity, configure a **Sanity webhook** that triggers your **Cloudflare deploy hook** so static pages rebuild with fresh GROQ data.
+| Setting | Value |
+|--------|--------|
+| **Root directory** | `web` |
+| **Build command** | `npm run build` |
+| **Build output directory** | `out` |
+| **Deploy command** | *(empty / none)* — do **not** run `npx wrangler deploy` |
+
+If the UI only shows a **Deploy command** pre-filled with `npx wrangler deploy`, clear it or create a **Pages** project instead of a **Workers** Git project.
+
+Set the same env vars you use locally (Sanity project/dataset, `NEXT_PUBLIC_SITE_URL`, Web3Forms key, optional analytics) in the Pages project.
+
+After publishing content in Sanity, configure a **Sanity webhook** that triggers your **Cloudflare Pages deploy hook** so static pages rebuild with fresh GROQ data.
 
 **Node:** target **Node 20.19+** where possible (several dependencies declare newer engine ranges).
+
+### If the build log shows this failure
+
+`npm run build` **succeeds**, then **`npx wrangler deploy`** runs and fails with:
+
+`ENOENT ... .next/standalone/.next/server/pages-manifest.json`
+
+**Cause:** Wrangler is using the **OpenNext / Cloudflare Workers** path. That expects a **standalone** server build. This repo is **fully static** (`out/`), so those files are never created.
+
+**Fix:** Remove the **deploy / wrangler** step. On **Pages**, only the build + `out` directory should run — no second OpenNext build.

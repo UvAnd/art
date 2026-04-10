@@ -35,11 +35,16 @@ Create singleton documents from the desk (Site settings, About, Contact) and add
 
 ## Deployment (Cloudflare Pages)
 
-- **Build command:** `cd web && npm run build`
-- **Output directory:** `web/out`
-- **Environment variables:** see [`web/.env.local.example`](web/.env.local.example) — set the same values in Cloudflare (including `NEXT_PUBLIC_SITE_URL` for production).
+Use **Pages** (static hosting), not **Workers** + `wrangler deploy`.
 
-After publishing content in Sanity, trigger a rebuild via a **Sanity webhook → Cloudflare Deploy hook** (see architecture notes).
+- **Root directory:** `web`
+- **Build command:** `npm run build`
+- **Output directory:** `out` (relative to `web/`, i.e. `web/out` from repo root)
+- **Deploy command:** leave **empty** (`wrangler` / OpenNext is for server-style Next apps; this site is `output: "export"`).
+
+**Environment variables:** see [`web/.env.local.example`](web/.env.local.example) — set the same values in Cloudflare (including `NEXT_PUBLIC_SITE_URL` for production).
+
+After publishing content in Sanity, trigger a rebuild via a **Sanity webhook → Cloudflare Pages deploy hook**.
 
 ## Node
 
