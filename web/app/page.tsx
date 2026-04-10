@@ -31,13 +31,11 @@ export default async function HomePage() {
     (w) => w.slug?.current,
   ) as WorkListItem[];
 
-  const previewWorks = works.slice(0, 9);
-
   return (
     <div className="flex flex-col">
       <HeroSlider slides={slides.length ? slides : works.slice(0, 8)} />
       <Suspense fallback={<div className="py-10" />}>
-        <GalleryPreview works={previewWorks} categories={categories} />
+        <GalleryPreview works={works} categories={categories} />
       </Suspense>
     </div>
   );
