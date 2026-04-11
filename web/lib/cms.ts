@@ -8,6 +8,7 @@ import {
   contactPageQuery,
   siteSettingsQuery,
   workBySlugQuery,
+  workSitemapEntriesQuery,
 } from "@/lib/sanity.queries";
 import type {
   AboutPage,
@@ -40,6 +41,13 @@ export async function getWorkBySlug(slug: string): Promise<WorkDetail | null> {
 export async function getAllWorkSlugs(): Promise<string[]> {
   const rows = await fetchSanity<Array<{ slug: string }>>(allWorkSlugsQuery);
   return rows?.map((r) => r.slug).filter(Boolean) ?? [];
+}
+
+export type WorkSitemapEntry = { slug: string; publishedAt?: string | null };
+
+export async function getWorkSitemapEntries(): Promise<WorkSitemapEntry[]> {
+  const rows = await fetchSanity<WorkSitemapEntry[]>(workSitemapEntriesQuery);
+  return rows?.filter((r) => Boolean(r.slug)) ?? [];
 }
 
 export async function getAboutPage(): Promise<AboutPage | null> {

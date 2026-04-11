@@ -24,3 +24,22 @@ export function imageUrl(
     return undefined;
   }
 }
+
+/** OG / Twitter card size; fits image inside 1200×630 (good for logos and artwork). */
+export function ogImageUrl(
+  source: SanityImageSource | null | undefined,
+  quality = 85,
+): string | undefined {
+  if (!source || !isSanityConfigured()) return undefined;
+  try {
+    return urlFor(source)
+      .width(1200)
+      .height(630)
+      .fit("max")
+      .quality(quality)
+      .auto("format")
+      .url();
+  } catch {
+    return undefined;
+  }
+}

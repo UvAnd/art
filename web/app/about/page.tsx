@@ -3,12 +3,31 @@ import type { Metadata } from "next";
 import { PortraitSection } from "@/components/about/portrait-section";
 
 import { getAboutPage, getSiteSettings } from "@/lib/cms";
+import { getDefaultShareImageUrl } from "@/lib/seo/share-image";
+import { getSiteUrl } from "@/lib/seo/site-url";
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings();
+  const title = "About";
+  const description = s.defaultSeo?.description ?? "About the artist.";
+  const siteUrl = getSiteUrl();
+  const image = getDefaultShareImageUrl(s);
   return {
-    title: "About",
-    description: s.defaultSeo?.description ?? "About the artist.",
+    title,
+    description,
+    alternates: { canonical: "/about" },
+    openGraph: {
+      title,
+      description,
+      url: `${siteUrl}/about`,
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 

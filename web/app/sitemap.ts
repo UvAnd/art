@@ -1,24 +1,26 @@
 import type { MetadataRoute } from "next";
 
-import { getAllWorkSlugs } from "@/lib/cms";
+import { getWorkSitemapEntries } from "@/lib/cms";
+import { getSiteUrl } from "@/lib/seo/site-url";
 
 export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
+  const base = getSiteUrl();
+
+  const now = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = ["", "/works", "/about", "/contact"].map(
     (path) => ({
       url: `${base}${path || "/"}`,
-      lastModified: new Date(),
+      lastModified: now,
     }),
   );
 
-  const slugs = await getAllWorkSlugs();
-  const workRoutes: MetadataRoute.Sitemap = slugs.map((slug) => ({
+  const entries = await getWorkSitemapEntries();
+  const workRoutes: MetadataRoute.Sitemap = entries.map(({ slug, publishedAt }) => ({
     url: `${base}/works/${slug}`,
-    lastModified: new Date(),
+    lastModified: publishedAt ? new Date(publishedAt) : now,
   }));
 
   return [...staticRoutes, ...workRoutes];

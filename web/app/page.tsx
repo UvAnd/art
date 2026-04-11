@@ -5,6 +5,8 @@ import { GalleryPreview } from "@/components/home/gallery-preview";
 import { HeroSlider } from "@/components/home/hero-slider";
 
 import { getAllWorks, getCategories, getSiteSettings } from "@/lib/cms";
+import { getDefaultShareImageUrl } from "@/lib/seo/share-image";
+import { getSiteUrl } from "@/lib/seo/site-url";
 
 import type { WorkListItem } from "@/types/sanity";
 
@@ -13,10 +15,24 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = s.defaultSeo?.title ?? s.siteTitle ?? "Artist portfolio";
   const description =
     s.defaultSeo?.description ?? "Contemporary art and illustration.";
+  const siteUrl = getSiteUrl();
+  const image = getDefaultShareImageUrl(s);
   return {
     title,
     description,
-    openGraph: { title, description },
+    alternates: { canonical: "/" },
+    openGraph: {
+      title,
+      description,
+      url: siteUrl,
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 

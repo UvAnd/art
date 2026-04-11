@@ -47,6 +47,13 @@ export const allWorkSlugsQuery = `
   *[_type == "work" && defined(slug.current)]{ "slug": slug.current }
 `;
 
+export const workSitemapEntriesQuery = `
+  *[_type == "work" && defined(slug.current)]{
+    "slug": slug.current,
+    publishedAt
+  }
+`;
+
 export const aboutPageQuery = `*[_type == "aboutPage"][0]{ portrait, bio }`;
 
 export const contactPageQuery = `

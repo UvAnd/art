@@ -5,6 +5,8 @@ import { WorkDetailLayout } from "@/components/work/work-detail-layout";
 import { WorkJsonLd } from "@/components/seo/work-json-ld";
 
 import { getAllWorkSlugs, getSiteSettings, getWorkBySlug } from "@/lib/cms";
+import { getDefaultShareImageUrl } from "@/lib/seo/share-image";
+import { getSiteUrl } from "@/lib/seo/site-url";
 import { imageUrl } from "@/lib/sanity.image";
 
 /** Next.js static export requires at least one param when the dynamic segment exists. */
@@ -34,14 +36,24 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const site = settings.siteTitle ?? "Artist portfolio";
   const title = `${work.title} · ${site}`;
   const description = settings.defaultSeo?.description ?? work.title ?? undefined;
-  const og = imageUrl(work.mainImage, 1200, 85);
+  const siteUrl = getSiteUrl();
+  const fallbackImage = getDefaultShareImageUrl(settings);
+  const og = imageUrl(work.mainImage, 1200, 85) ?? fallbackImage;
   return {
     title: work.title,
     description,
+    alternates: { canonical: `/works/${slug}` },
     openGraph: {
       title,
       description,
-      images: og ? [{ url: og }] : undefined,
+      url: `${siteUrl}/works/${slug}`,
+      images: [{ url: og, alt: work.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [og],
     },
   };
 }
@@ -67,14 +79,15 @@ export default async function WorkPage(props: Props) {
     notFound();
   }
 
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
+  const siteUrlForJsonLd =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "") ?? "";
 
   return (
     <>
-      {siteUrl ? (
+      {siteUrlForJsonLd ? (
         <WorkJsonLd
           work={work}
-          siteUrl={siteUrl}
+          siteUrl={siteUrlForJsonLd}
           canonicalPath={`/works/${slug}`}
         />
       ) : null}
