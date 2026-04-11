@@ -38,11 +38,29 @@ export function ContactForm({
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
+  const [formError, setFormError] = useState<string | null>(null);
 
   const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY?.trim() ?? "";
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setFormError(null);
+    setStatus("idle");
+
+    const emailTrimmed = email.trim();
+    const messageTrimmed = message.trim();
+
+    if (!emailTrimmed || !messageTrimmed) {
+      setFormError("Please enter your email and a message.");
+      return;
+    }
+
+    const form = e.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
     if (!accessKey) {
       setStatus("error");
       return;
@@ -54,8 +72,8 @@ export function ContactForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           access_key: accessKey,
-          email,
-          message,
+          email: emailTrimmed,
+          message: messageTrimmed,
           botcheck: "",
         }),
       });
@@ -98,7 +116,6 @@ export function ContactForm({
             <form
               className="flex w-full max-w-[474px] flex-col gap-6"
               onSubmit={onSubmit}
-              noValidate
             >
               <div className="flex flex-col gap-8">
                 <div className="focus-within:border-primary relative border-b-2 border-muted-foreground transition-colors">
@@ -109,9 +126,14 @@ export function ContactForm({
                     autoComplete="email"
                     required
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setFormError(null);
+                    }}
                     placeholder=" "
                     className={floatInput}
+                    aria-invalid={formError ? true : undefined}
+                    aria-describedby={formError ? "contact-form-error" : undefined}
                   />
                   <label htmlFor="email" className={floatLabel}>
                     Your Email
@@ -125,9 +147,14 @@ export function ContactForm({
                     required
                     rows={1}
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                      setFormError(null);
+                    }}
                     placeholder=" "
                     className={floatTextarea}
+                    aria-invalid={formError ? true : undefined}
+                    aria-describedby={formError ? "contact-form-error" : undefined}
                   />
                   <label htmlFor="message" className={floatLabel}>
                     Your Message
@@ -154,12 +181,21 @@ export function ContactForm({
                 >
                   {status === "loading" ? "Sending…" : "Send"}
                 </Button>
+                {formError ? (
+                  <p
+                    id="contact-form-error"
+                    className="text-destructive text-sm"
+                    role="alert"
+                  >
+                    {formError}
+                  </p>
+                ) : null}
                 {status === "success" ? (
                   <p className="text-sm text-green-600 dark:text-green-400">
                     Message sent. Thank you!
                   </p>
                 ) : null}
-                {status === "error" ? (
+                {status === "error" && !formError ? (
                   <p className="text-destructive text-sm">
                     Something went wrong. Try again later.
                   </p>

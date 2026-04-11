@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Baloo_2, Geist_Mono } from "next/font/google";
 
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
+import { ClickSparkShell } from "@/components/layout/click-spark-shell";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { getSiteSettings } from "@/lib/cms";
@@ -44,10 +45,12 @@ export default async function RootLayout({
       lang="en"
       className={`${baloo.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="bg-background text-foreground min-h-full flex flex-col">
-        <Header settings={settings} />
-        {children}
-        <Footer settings={settings} />
+      <body className="bg-background text-foreground flex min-h-full flex-col">
+        <ClickSparkShell>
+          <Header settings={settings} />
+          {children}
+          <Footer settings={settings} />
+        </ClickSparkShell>
         <AnalyticsProvider />
       </body>
     </html>
